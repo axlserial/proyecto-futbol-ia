@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="es-MX">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Agentes Equipo de Fútbol</title>
-	</head>
-	<body>
-		<div id="app">
-			<h1>Juego Fútbol</h1>
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Agentes Equipo de Fútbol</title>
+</head>
+
+<body>
+	<div id="app">
+		<h1 id="title">Partido de Fútbol con Pollitos</h1>
+		<section id="field">
+		</section>
+		<div id="menu">
+			<p id="timer">00:00</p>
+			<div id="score">
+				<div class="team-name">Gallos Claudio</div>
+				<div class="goals">0</div>
+				<div class="goals">0</div>
+				<div class="team-name right">Los Chicken Little</div>
+			</div>
+			<button type="button">Iniciar</button>
+			<small>La duración de los partidos es de 3 minutos.</small>
 		</div>
-		<script type="module" src="/src/main.ts"></script>
-	</body>
+	</div>
+	<script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>
