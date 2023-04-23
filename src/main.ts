@@ -32,11 +32,7 @@ const Main = () => {
 
 	// Inicia el timer al dar click en el botón de inicio
 	const startButton = document.getElementById("iniciar") as HTMLButtonElement;
-	startButton.addEventListener("click", () => {
-		const timerElement = document.getElementById("timer") as HTMLObjectElement;
-		startButton.disabled = true;
-		timer(timerElement, startButton);
-	});
+	startButton.addEventListener("click", timer);
 };
 
 Main();
