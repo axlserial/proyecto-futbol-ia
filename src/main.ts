@@ -3,7 +3,7 @@ import * as PIXI from "pixi.js";
 import fieldUrl from "./assets/field.jpg";
 import bg from "./assets/bg.svg";
 import { timer } from "./timer";
-import { MOVEMENT_SPEED, PELOTA_TEXTURA, POLLITO_BLANCO_TEXTURA } from "./utils/constants";
+import { MOVEMENT_SPEED, PELOTA_TEXTURA, POLLITO_BLANCO_TEXTURA, POLLITO_CAFE_TEXTURA } from "./utils/constants";
 import { collisionResponse, distanceBetweenTwoPoints, testForAABB } from "./utils/functions";
 import { Balon } from "./classes/Balon";
 import { Pollito } from "./classes/Pollito";
@@ -105,23 +105,35 @@ const Main = () => {
 	];
 
 	const poligono = new PIXI.Polygon(coord)
-	
+
 	// mostrar poligono
 	const poligonoGrafico = new PIXI.Graphics();
 	poligonoGrafico.lineStyle(1, 0x000000);
 	// poligonoGrafico.beginFill(0x000000, 0.1);
 	// poligonoGrafico.endFill();
-	poligonoGrafico.beginTextureFill({texture: POLLITO_BLANCO_TEXTURA});
+	poligonoGrafico.beginTextureFill({ texture: POLLITO_BLANCO_TEXTURA });
 	poligonoGrafico.drawPolygon(poligono);
 	poligonoGrafico.endFill();
 	//poligonoGrafico.scale = new PIXI.Point(0.05, 0.05)
-	app.stage.addChild(poligonoGrafico);
+	//app.stage.addChild(poligonoGrafico);
 
 
 	// Ball
-	const balon = new Balon(PELOTA_TEXTURA, 25, 25, app.screen.width / 2, app.screen.width / 2, 2, 1020, 670);
+	const balon = new Balon(PELOTA_TEXTURA, 25, 25, app.screen.width / 2, app.screen.height / 2, 2, 1020, 670);
 
-	const pollo = new Pollito(POLLITO_BLANCO_TEXTURA, 50 * (781 / 1019), 50, 100, 100, 1, 1020, 670)
+	const polloBlanco1 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 50, 330, 1, 1020, 670)
+	const polloBlanco2 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 200, 1, 1020, 670)
+	const polloBlanco3 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 460, 1, 1020, 670)
+	const polloBlanco4 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 150, 1, 1020, 670)
+	const polloBlanco5 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 330, 1, 1020, 670)
+	const polloBlanco6 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 530, 1, 1020, 670)
+
+	const polloCafe1 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 970, 330, 1, 1020, 670)
+	const polloCafe2 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 200, 1, 1020, 670)
+	const polloCafe3 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 460, 1, 1020, 670)
+	const polloCafe4 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 150, 1, 1020, 670)
+	const polloCafe5 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 330, 1, 1020, 670)
+	const polloCafe6 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 530, 1, 1020, 670)
 
 	const mouseCoords = new PIXI.Point(0, 0);
 	app.stage.interactive = true;
@@ -133,7 +145,19 @@ const Main = () => {
 
 	// Listen for animate update
 	app.ticker.add((delta) => {
-		pollo.loop()
+		polloBlanco1.loop()
+		polloBlanco2.loop()
+		polloBlanco3.loop()
+		polloBlanco4.loop()
+		polloBlanco5.loop()
+		polloBlanco6.loop()
+
+		polloCafe1.loop()
+		polloCafe2.loop()
+		polloCafe3.loop()
+		polloCafe4.loop()
+		polloCafe5.loop()
+		polloCafe6.loop()
 
 		// BALOOOON
 		balon.loop()
@@ -146,7 +170,7 @@ const Main = () => {
 		} */
 
 		// If the mouse is off screen, then don't update any further
-		if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
+		/* if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
 			|| app.screen.height > mouseCoords.y || mouseCoords.y > 0) {
 			// Get the red square's center point
 			const redSquareCenterPosition = new PIXI.Point(
@@ -180,23 +204,23 @@ const Main = () => {
 				Math.cos(angleToMouse) * redSpeed,
 				Math.sin(angleToMouse) * redSpeed,
 			);
-		}
+		} */
 
 		// If the two squares are colliding
-		if (testForAABB(balon, pollo)) {
+		/* if (testForAABB(balon, polloBlanco1)) {
 			// Calculate the changes in acceleration that should be made between
 			// each square as a result of the collision
-			const collisionPush = collisionResponse(balon, pollo);
+			const collisionPush = collisionResponse(balon, polloBlanco1);
 			// Set the changes in acceleration for both squares
-			pollo.acceleration.set(
+			polloBlanco1.acceleration.set(
 				(collisionPush.x * balon.mass),
 				(collisionPush.y * balon.mass),
 			);
 			balon.acceleration.set(
-				-(collisionPush.x * pollo.mass),
-				-(collisionPush.y * pollo.mass),
+				-(collisionPush.x * polloBlanco1.mass),
+				-(collisionPush.y * polloBlanco1.mass),
 			);
-		}
+		} */
 
 		if (testForAABB(balon, porteriaIzquierda)) {
 			console.log("Gol en la izquierda");
@@ -208,11 +232,24 @@ const Main = () => {
 
 
 		balon.move(delta)
-		pollo.move(delta)
+		polloBlanco1.move(delta)
+		polloBlanco2.move(delta)
+		polloBlanco3.move(delta)
+		polloBlanco4.move(delta)
+		polloBlanco5.move(delta)
+		polloBlanco6.move(delta)
+
+		polloCafe1.move(delta)
+		polloCafe2.move(delta)
+		polloCafe3.move(delta)
+		polloCafe4.move(delta)
+		polloCafe5.move(delta)
+		polloCafe6.move(delta)
 	});
 
 	// Add to stage
-	app.stage.addChild(pollo, balon);
+	app.stage.addChild(polloBlanco1, polloBlanco2, polloBlanco3, polloBlanco4, polloBlanco5, polloBlanco6, balon)
+	app.stage.addChild(polloCafe1, polloCafe2, polloCafe3, polloCafe4, polloCafe5, polloCafe6)
 
 };
 
