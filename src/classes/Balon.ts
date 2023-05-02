@@ -1,8 +1,10 @@
 import { Point, Sprite, Texture } from 'pixi.js'
+import Intersect from 'yy-intersects'
 
 export class Balon extends Sprite {
 	private screenWidth: number
 	private screenHeight: number
+	public shape: Intersect.Circle
 
 	constructor(image: Texture, width: number, height: number, x: number, y: number, mass: number, screenWidth: number, screenHeight: number) {
 		super(image)
@@ -14,6 +16,7 @@ export class Balon extends Sprite {
 		this.mass = mass
 		this.screenWidth = screenWidth
 		this.screenHeight = screenHeight
+		this.shape = new Intersect.Circle(this)
 	}
 
 	// Chechar limites del campo
@@ -37,6 +40,9 @@ export class Balon extends Sprite {
 
 		// Limits
 		this.checkLimits()
+
+/* 		if (this.shape.collidesPoint(new Point(this.x, this.y)))
+			console.log('si') */
 	}
 
 	public move(delta: number): void {

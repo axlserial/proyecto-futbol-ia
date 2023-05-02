@@ -1,9 +1,11 @@
 import { Sprite, Point } from "pixi.js"
 import { IMPULSE_POWER } from "./constants"
+import { Balon } from "../classes/Balon"
+import { Pollito } from "../classes/Pollito"
 
 // Test For Hit
 // A basic AABB check between two different squares
-export const testForAABB = (object1: Sprite, object2: Sprite): boolean => {
+export const testForAABB = (object1: Pollito, object2: Balon): boolean => {
 	const bounds1 = object1.getBounds()
 	const bounds2 = object2.getBounds()
 
@@ -11,6 +13,8 @@ export const testForAABB = (object1: Sprite, object2: Sprite): boolean => {
 		&& bounds1.x + bounds1.width > bounds2.x
 		&& bounds1.y < bounds2.y + bounds2.height
 		&& bounds1.y + bounds1.height > bounds2.y
+	
+	return object1.shape.collidesCircle(object2.shape)
 }
 
 // Calculates the results of a collision, allowing us to give an impulse that
@@ -57,4 +61,12 @@ export const distanceBetweenTwoPoints = (p1: Point, p2: Point): number => {
 	const b = p1.y - p2.y
 
 	return Math.hypot(a, b)
+}
+
+// Función que regresa un objeto Punto aleatorio
+export const getRandomPoint = (): Point => {
+	return new Point(
+		Math.floor(Math.random() * (2 - 0 + 1)) + 0,
+		Math.floor(Math.random() * (2 - 0 + 1)) + 0
+	)
 }

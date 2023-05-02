@@ -7,6 +7,7 @@ import { MOVEMENT_SPEED, PELOTA_TEXTURA, POLLITO_BLANCO_TEXTURA, POLLITO_CAFE_TE
 import { collisionResponse, distanceBetweenTwoPoints, testForAABB } from "./utils/functions";
 import { Balon } from "./classes/Balon";
 import { Pollito } from "./classes/Pollito";
+import { Porteria } from "./classes/Porteria";
 
 declare module "pixi.js" {
 	interface Sprite {
@@ -27,6 +28,9 @@ const Main = () => {
 		resizeTo: section,
 	});
 
+	const screenWidth = section.clientWidth;
+	const screenHeight = section.clientHeight;
+
 	// Agregar el canvas de PixiJS al elemento HTML
 	section.appendChild(app.view as any);
 
@@ -46,45 +50,29 @@ const Main = () => {
 	startButton.addEventListener("click", timer);
 
 	// Porteria derecha
-	const porteriaDerecha = new PIXI.Sprite(PIXI.Texture.WHITE);
-	porteriaDerecha.width = 34;
-	porteriaDerecha.height = 88;
-
-	porteriaDerecha.x = 975;
-	porteriaDerecha.y = 291;
-
-	porteriaDerecha.tint = 0x3500FA;
-
+	const porteriaDerecha = new Porteria(975, 291)
 	app.stage.addChild(porteriaDerecha);
 
 	// Porteria izquierda
-	const porteriaIzquierda = new PIXI.Sprite(PIXI.Texture.WHITE);
-	porteriaIzquierda.width = 34;
-	porteriaIzquierda.height = 88;
-
-	porteriaIzquierda.x = app.screen.width - 1009;
-	porteriaIzquierda.y = app.screen.height - 380;
-
-	porteriaIzquierda.tint = 0x3500FA;
-
+	const porteriaIzquierda = new Porteria(app.screen.width - 1009, app.screen.height - 380)
 	app.stage.addChild(porteriaIzquierda);
 
 	// Ball
 	const balon = new Balon(PELOTA_TEXTURA, 25, 25, app.screen.width / 2, app.screen.height / 2, 2, 1020, 670);
 
-	const polloBlanco1 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 80, 330, 4, 1020, 670)
-	const polloBlanco2 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 200, 4, 1020, 670)
-	const polloBlanco3 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 460, 4, 1020, 670)
-	const polloBlanco4 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 150, 4, 1020, 670)
-	const polloBlanco5 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 330, 4, 1020, 670)
-	const polloBlanco6 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 530, 4, 1020, 670)
+	const polloBlanco1 = new Pollito(POLLITO_BLANCO_TEXTURA, 80, 330, 4, new PIXI.Point(45, 100), new PIXI.Point(screenWidth / 4, screenHeight - 100)) // portero
+	const polloBlanco2 = new Pollito(POLLITO_BLANCO_TEXTURA, 250, 200, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth / 2, screenHeight - 25)) // defensa
+	const polloBlanco3 = new Pollito(POLLITO_BLANCO_TEXTURA, 250, 460, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth / 2, screenHeight - 25)) // defensa
+	const polloBlanco4 = new Pollito(POLLITO_BLANCO_TEXTURA, 400, 150, 4, new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)) // delantero
+	const polloBlanco5 = new Pollito(POLLITO_BLANCO_TEXTURA, 400, 330, 4, new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)) // delantero
+	const polloBlanco6 = new Pollito(POLLITO_BLANCO_TEXTURA, 400, 530, 4, new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)) // delantero
 
-	const polloCafe1 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 930, 330, 4, 1020, 670)
-	const polloCafe2 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 200, 4, 1020, 670)
-	const polloCafe3 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 460, 4, 1020, 670)
-	const polloCafe4 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 150, 4, 1020, 670)
-	const polloCafe5 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 330, 4, 1020, 670)
-	const polloCafe6 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 530, 4, 1020, 670)
+	const polloCafe1 = new Pollito(POLLITO_CAFE_TEXTURA, 920, 330, 4, new PIXI.Point(screenWidth - 230, 100), new PIXI.Point(screenWidth - 45, screenHeight - 100)) // portero
+	const polloCafe2 = new Pollito(POLLITO_CAFE_TEXTURA, 770, 200, 4, new PIXI.Point(screenWidth / 2, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)) // defensa
+	const polloCafe3 = new Pollito(POLLITO_CAFE_TEXTURA, 770, 460, 4, new PIXI.Point(screenWidth / 2, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)) // defensa
+	const polloCafe4 = new Pollito(POLLITO_CAFE_TEXTURA, 620, 150, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)) // delantero
+	const polloCafe5 = new Pollito(POLLITO_CAFE_TEXTURA, 620, 330, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)) // delantero
+	const polloCafe6 = new Pollito(POLLITO_CAFE_TEXTURA, 620, 530, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)) // delantero
 
 	const mouseCoords = new PIXI.Point(0, 0);
 	app.stage.interactive = true;
@@ -158,7 +146,9 @@ const Main = () => {
 		} */
 
 		// If the two squares are colliding
-		if (testForAABB(balon, polloBlanco1)) {
+		if (balon.shape.collidesRectangle(polloBlanco1.shape))
+			console.log('si porfa')
+		if (testForAABB(polloBlanco1, balon)) {
 			// Calculate the changes in acceleration that should be made between
 			// each square as a result of the collision
 			const collisionPush = collisionResponse(balon, polloBlanco1);
@@ -173,7 +163,7 @@ const Main = () => {
 			);
 		}
 
-		if (testForAABB(balon, polloBlanco2)) {
+		if (testForAABB(polloBlanco2, balon)) {
 			// Calculate the changes in acceleration that should be made between
 			// each square as a result of the collision
 			const collisionPush = collisionResponse(balon, polloBlanco2);
@@ -188,7 +178,7 @@ const Main = () => {
 			);
 		}
 
-		if (testForAABB(balon, polloBlanco3)) {
+		if (testForAABB(polloBlanco3, balon)) {
 			// Calculate the changes in acceleration that should be made between
 			// each square as a result of the collision
 			const collisionPush = collisionResponse(balon, polloBlanco3);
@@ -203,11 +193,11 @@ const Main = () => {
 			);
 		}
 
-		if (testForAABB(balon, porteriaIzquierda)) {
+		if (balon.shape.collidesRectangle(porteriaIzquierda.shape)) {
 			console.log("Gol en la izquierda");
 		};
 
-		if (testForAABB(balon, porteriaDerecha)) {
+		if (balon.shape.collidesRectangle(porteriaDerecha.shape)) {
 			console.log("Gol en la derecha");
 		};
 
