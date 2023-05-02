@@ -10,7 +10,7 @@ export class Pollito extends Sprite {
 		this.position.set(x, y)
 		this.width = width
 		this.height = height
-		this.acceleration = new Point(0)
+		this.acceleration = new Point(3, 2)
 		this.mass = mass
 		this.screenWidth = screenWidth
 		this.screenHeight = screenHeight
@@ -21,22 +21,24 @@ export class Pollito extends Sprite {
 
 	// Chechar limites del campo
 	private checkLimits(): void {
-		// Check whether the ball ever moves off the screen
+		// Check whether the little chicken ever moves off the screen
 		// If so, reverse acceleration in that direction
 		const boundX = 45 + this.width / 2
 		const boundY = 25 + this.height / 2
 
-		if (this.x < boundX || this.x > (this.screenWidth - boundX))
+		if (this.x < boundX || this.x > (this.screenWidth - boundX)) {
 			this.acceleration.x = -this.acceleration.x
+		}
 
-		if (this.y < boundY || this.y > (this.screenHeight - boundY))
+		if (this.y < boundY || this.y > (this.screenHeight - boundY)) {
 			this.acceleration.y = -this.acceleration.y
+		}
 	}
 
 	// Acciones del balón en el loop
 	public loop(): void {
 		//Reducing the acceleration by 0.01% of the acceleration
-		this.acceleration.set(this.acceleration.x * 0.99, this.acceleration.y * 0.99)
+		//this.acceleration.set(this.acceleration.x * 0.99, this.acceleration.y * 0.99)
 
 		// Limits
 		this.checkLimits()

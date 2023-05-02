@@ -13,6 +13,7 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
-    "pixi.js": "^7.2.4"
+    "pixi.js": "^7.2.4",
+    "yy-intersects": "^1.0.8"
   }
 }

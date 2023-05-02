@@ -121,19 +121,19 @@ const Main = () => {
 	// Ball
 	const balon = new Balon(PELOTA_TEXTURA, 25, 25, app.screen.width / 2, app.screen.height / 2, 2, 1020, 670);
 
-	const polloBlanco1 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 50, 330, 1, 1020, 670)
-	const polloBlanco2 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 200, 1, 1020, 670)
-	const polloBlanco3 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 460, 1, 1020, 670)
-	const polloBlanco4 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 150, 1, 1020, 670)
-	const polloBlanco5 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 330, 1, 1020, 670)
-	const polloBlanco6 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 530, 1, 1020, 670)
+	const polloBlanco1 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 80, 330, 4, 1020, 670)
+	const polloBlanco2 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 200, 4, 1020, 670)
+	const polloBlanco3 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 250, 460, 4, 1020, 670)
+	const polloBlanco4 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 150, 4, 1020, 670)
+	const polloBlanco5 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 330, 4, 1020, 670)
+	const polloBlanco6 = new Pollito(POLLITO_BLANCO_TEXTURA, 60 * (781 / 1019), 60, 400, 530, 4, 1020, 670)
 
-	const polloCafe1 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 970, 330, 1, 1020, 670)
-	const polloCafe2 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 200, 1, 1020, 670)
-	const polloCafe3 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 460, 1, 1020, 670)
-	const polloCafe4 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 150, 1, 1020, 670)
-	const polloCafe5 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 330, 1, 1020, 670)
-	const polloCafe6 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 530, 1, 1020, 670)
+	const polloCafe1 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 930, 330, 4, 1020, 670)
+	const polloCafe2 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 200, 4, 1020, 670)
+	const polloCafe3 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 770, 460, 4, 1020, 670)
+	const polloCafe4 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 150, 4, 1020, 670)
+	const polloCafe5 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 330, 4, 1020, 670)
+	const polloCafe6 = new Pollito(POLLITO_CAFE_TEXTURA, 60 * (781 / 1019), 60, 620, 530, 4, 1020, 670)
 
 	const mouseCoords = new PIXI.Point(0, 0);
 	app.stage.interactive = true;
@@ -174,8 +174,8 @@ const Main = () => {
 			|| app.screen.height > mouseCoords.y || mouseCoords.y > 0) {
 			// Get the red square's center point
 			const redSquareCenterPosition = new PIXI.Point(
-				pollo.x,
-				pollo.y,
+				polloBlanco1.x,
+				polloBlanco1.y,
 			);
 
 			// Calculate the direction vector between the mouse pointer and
@@ -200,14 +200,14 @@ const Main = () => {
 			const redSpeed = distMouseRedSquare * MOVEMENT_SPEED;
 
 			// Calculate the acceleration of the red square
-			pollo.acceleration.set(
+			polloBlanco1.acceleration.set(
 				Math.cos(angleToMouse) * redSpeed,
 				Math.sin(angleToMouse) * redSpeed,
 			);
 		} */
 
 		// If the two squares are colliding
-		/* if (testForAABB(balon, polloBlanco1)) {
+		if (testForAABB(balon, polloBlanco1)) {
 			// Calculate the changes in acceleration that should be made between
 			// each square as a result of the collision
 			const collisionPush = collisionResponse(balon, polloBlanco1);
@@ -220,7 +220,37 @@ const Main = () => {
 				-(collisionPush.x * polloBlanco1.mass),
 				-(collisionPush.y * polloBlanco1.mass),
 			);
-		} */
+		}
+
+		if (testForAABB(balon, polloBlanco2)) {
+			// Calculate the changes in acceleration that should be made between
+			// each square as a result of the collision
+			const collisionPush = collisionResponse(balon, polloBlanco2);
+			// Set the changes in acceleration for both squares
+			polloBlanco2.acceleration.set(
+				(collisionPush.x * balon.mass),
+				(collisionPush.y * balon.mass),
+			);
+			balon.acceleration.set(
+				-(collisionPush.x * polloBlanco2.mass),
+				-(collisionPush.y * polloBlanco2.mass),
+			);
+		}
+
+		if (testForAABB(balon, polloBlanco3)) {
+			// Calculate the changes in acceleration that should be made between
+			// each square as a result of the collision
+			const collisionPush = collisionResponse(balon, polloBlanco3);
+			// Set the changes in acceleration for both squares
+			polloBlanco3.acceleration.set(
+				(collisionPush.x * balon.mass),
+				(collisionPush.y * balon.mass),
+			);
+			balon.acceleration.set(
+				-(collisionPush.x * polloBlanco3.mass),
+				-(collisionPush.y * polloBlanco3.mass),
+			);
+		}
 
 		if (testForAABB(balon, porteriaIzquierda)) {
 			console.log("Gol en la izquierda");
