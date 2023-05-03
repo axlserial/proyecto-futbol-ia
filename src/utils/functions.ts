@@ -65,8 +65,16 @@ export const distanceBetweenTwoPoints = (p1: Point, p2: Point): number => {
 
 // Función que regresa un objeto Punto aleatorio
 export const getRandomPoint = (): Point => {
-	return new Point(
-		Math.floor(Math.random() * (2 - 0 + 1)) + 0,
-		Math.floor(Math.random() * (2 - 0 + 1)) + 0
-	)
+	// Arreglo de posibles puntos de numeros
+	const points = [ [0,2.83], [1.08,2.61], [2,2], [2.61,1.08], 
+	[2.83,0], [2.61,-1.08], [2,-2], [1.08,-2.61], 
+	[0,-2.83], [-1.08,-2.61], [-2,-2], [-2.61,-1.08],
+	[-2.83,0], [-2.61,1.08], [-2,2], [-1.08,2.61]];
+
+	// Se obtiene un punto aleatorio
+	const randomPoint = points[Math.floor(Math.random() * points.length)];
+
+	// Se regresa el punto
+	return new Point(randomPoint[0], randomPoint[1]);
+
 }

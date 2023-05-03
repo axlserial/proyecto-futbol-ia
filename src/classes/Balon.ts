@@ -40,9 +40,6 @@ export class Balon extends Sprite {
 
 		// Limits
 		this.checkLimits()
-
-/* 		if (this.shape.collidesPoint(new Point(this.x, this.y)))
-			console.log('si') */
 	}
 
 	public move(delta: number): void {

@@ -11,9 +11,7 @@ export class Pollito extends Sprite {
 		super(image)
 		this.anchor.set(0.5)
 		this.position.set(x, y)
-		//this.width = width
-		//this.height = height
-		this.acceleration = new Point(3, 2) 
+		this.acceleration = getRandomPoint()
 		this.mass = mass
 		this.pointLeftTop = pointLeftTop
 		this.pointBottomRight = pointBottomRight
@@ -38,9 +36,6 @@ export class Pollito extends Sprite {
 
 	// Acciones del balón en el loop
 	public loop(): void {
-		//Reducing the acceleration by 0.01% of the acceleration
-		//this.acceleration.set(this.acceleration.x * 0.99, this.acceleration.y * 0.99)
-
 		// Limits
 		this.checkLimits()
 	}

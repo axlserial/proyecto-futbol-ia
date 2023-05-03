@@ -7,7 +7,7 @@ import pelota from './../assets/pelota.png'
 export const MOVEMENT_SPEED = 0.05;
 
 // Strength of the impulse push between two objects
-export const IMPULSE_POWER = 5;
+export const IMPULSE_POWER = 10;
 
 // Texturas
 export const POLLITO_BLANCO_TEXTURA = Texture.from(pollito_blanco)
