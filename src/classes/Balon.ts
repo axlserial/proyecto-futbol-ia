@@ -26,11 +26,15 @@ export class Balon extends Sprite {
 		const boundX = 45 + this.width / 2
 		const boundY = 25 + this.height / 2
 
-		if (this.x < boundX || this.x > (this.screenWidth - boundX))
+		if (this.x < boundX || this.x > (this.screenWidth - boundX)) {
 			this.acceleration.x = -this.acceleration.x
+			this.x += this.acceleration.x
+		}
 
-		if (this.y < boundY || this.y > (this.screenHeight - boundY))
+		if (this.y < boundY || this.y > (this.screenHeight - boundY)) {
 			this.acceleration.y = -this.acceleration.y
+			this.y += this.acceleration.y
+		}
 	}
 
 	// Acciones del balón en el loop

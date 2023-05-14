@@ -60,20 +60,26 @@ const Main = () => {
 	// Ball
 	const balon = new Balon(PELOTA_TEXTURA, 25, 25, screenWidth / 2, screenHeight / 2, 2, screenWidth, screenHeight);
 
+	// JUGADORES
+	const defensaIzq: [PIXI.Point, PIXI.Point] = [new PIXI.Point(45, 25), new PIXI.Point(screenWidth / 2, screenHeight - 25)]
+	const delanteroIzq: [PIXI.Point, PIXI.Point] = [new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)]
+	const defensaDer: [PIXI.Point, PIXI.Point] = [new PIXI.Point(screenWidth / 2, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)]
+	const delanteroDer: [PIXI.Point, PIXI.Point] = [new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)]
+
 	const jugadores = [
 		new Pollito(POLLITO_BLANCO_TEXTURA, 80, 330, 4, new PIXI.Point(45, 100), new PIXI.Point(screenWidth / 4, screenHeight - 100)), // portero
-		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 200, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth / 2, screenHeight - 25)), // defensa
-		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 460, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth / 2, screenHeight - 25)), // defensa
-		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 150, 4, new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)), // delantero
-		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 330, 4, new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)), // delantero
-		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 530, 4, new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 200, 4, ...defensaIzq), // defensa
+		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 460, 4, ...defensaIzq), // defensa
+		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 150, 4, ...delanteroIzq), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 330, 4, ...delanteroIzq), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 530, 4, ...delanteroIzq), // delantero
 
 		new Pollito(POLLITO_CAFE_TEXTURA, 920, 330, 4, new PIXI.Point(screenWidth - 230, 100), new PIXI.Point(screenWidth - 45, screenHeight - 100)), // portero
-		new Pollito(POLLITO_CAFE_TEXTURA, 770, 200, 4, new PIXI.Point(screenWidth / 2, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)), // defensa
-		new Pollito(POLLITO_CAFE_TEXTURA, 770, 460, 4, new PIXI.Point(screenWidth / 2, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)), // defensa
-		new Pollito(POLLITO_CAFE_TEXTURA, 620, 150, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)), // delantero
-		new Pollito(POLLITO_CAFE_TEXTURA, 620, 330, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)), // delantero
-		new Pollito(POLLITO_CAFE_TEXTURA, 620, 530, 4, new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 770, 200, 4, ...defensaDer), // defensa
+		new Pollito(POLLITO_CAFE_TEXTURA, 770, 460, 4, ...defensaDer), // defensa
+		new Pollito(POLLITO_CAFE_TEXTURA, 620, 150, 4, ...delanteroDer), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 620, 330, 4, ...delanteroDer), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 620, 530, 4, ...delanteroDer), // delantero
 	]
 
 	// Add players
@@ -90,10 +96,6 @@ const Main = () => {
 
 	// Listen for animate update
 	app.ticker.add((delta) => {
-
-		for (const jugador of jugadores)
-			jugador.loop()
-
 		// BALOOOON
 		balon.loop()
 
@@ -141,11 +143,13 @@ const Main = () => {
 			);
 		} */
 
-		// If the two squares are colliding
-		if (balon.shape.collidesRectangle(jugadores[0].shape))
-			console.log('si porfa')
-
+		// Movimiento Jugadores
 		for (const jugador of jugadores) {
+			jugador.loop()
+
+			if (balon.shape.collidesRectangle(jugador.shape))
+				console.log(`Balón colisión con jugador`)
+
 			if (testForAABB(jugador, balon)) {
 				// Calculate the changes in acceleration that should be made between
 				// each square as a result of the collision
@@ -159,10 +163,12 @@ const Main = () => {
 				balon.acceleration.set(
 					-collisionPush.x,
 					-collisionPush.y
-/* 					-(collisionPush.x * jugador.mass),
-					-(collisionPush.y * jugador.mass), */
+					/* 					-(collisionPush.x * jugador.mass),
+										-(collisionPush.y * jugador.mass), */
 				)
 			}
+
+			jugador.move(delta)
 		}
 
 
@@ -174,10 +180,7 @@ const Main = () => {
 			console.log("Gol en la derecha");
 		};
 
-
 		balon.move(delta)
-		for (const jugador of jugadores)
-			jugador.move(delta)
 	});
 
 };

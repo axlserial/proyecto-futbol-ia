@@ -27,10 +27,12 @@ export class Pollito extends Sprite {
 
 		if (this.x < (this.pointLeftTop.x + this.width / 2) || this.x > (this.pointBottomRight.x - this.width / 2)) {
 			this.acceleration.x = -this.acceleration.x
+			this.x += this.acceleration.x
 		}
 
 		if (this.y < (this.pointLeftTop.y + this.height / 2) || this.y > (this.pointBottomRight.y - this.height / 2)) {
 			this.acceleration.y = -this.acceleration.y
+			this.y += this.acceleration.y
 		}
 	}
 
