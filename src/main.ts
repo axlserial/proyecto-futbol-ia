@@ -2,9 +2,9 @@ import "./style.css";
 import * as PIXI from "pixi.js";
 import fieldUrl from "./assets/field.jpg";
 import bg from "./assets/bg.svg";
-import { timer } from "./timer";
-import { MOVEMENT_SPEED, PELOTA_TEXTURA, POLLITO_BLANCO_TEXTURA, POLLITO_CAFE_TEXTURA } from "./utils/constants";
-import { collisionResponse, distanceBetweenTwoPoints, testForAABB } from "./utils/functions";
+import { clouserTimer } from "./timer";
+import { PELOTA_TEXTURA, POLLITO_BLANCO_TEXTURA, POLLITO_CAFE_TEXTURA } from "./utils/constants";
+import { collisionResponse, testForAABB } from "./utils/functions";
 import { Balon } from "./classes/Balon";
 import { Pollito } from "./classes/Pollito";
 import { Porteria } from "./classes/Porteria";
@@ -15,6 +15,12 @@ declare module "pixi.js" {
 		mass: number;
 	}
 }
+
+const goles = {
+	izquierda: 0,
+	derecha: 0
+}
+
 
 const Main = () => {
 	// Agregar el fondo de la página
@@ -45,54 +51,66 @@ const Main = () => {
 	// Agregar el campo de juego al stage
 	app.stage.addChild(field);
 
-	// Inicia el timer al dar click en el botón de inicio
-	const startButton = document.getElementById("iniciar") as HTMLButtonElement;
-	startButton.addEventListener("click", timer);
-
 	// Porteria derecha
-	const porteriaDerecha = new Porteria(975, 291)
+	const porteriaDerecha = new Porteria(972, 291)
 	app.stage.addChild(porteriaDerecha);
 
 	// Porteria izquierda
-	const porteriaIzquierda = new Porteria(app.screen.width - 1009, app.screen.height - 380)
+	const porteriaIzquierda = new Porteria(app.screen.width - 1004, app.screen.height - 380)
 	app.stage.addChild(porteriaIzquierda);
 
 	// Ball
 	const balon = new Balon(PELOTA_TEXTURA, 25, 25, screenWidth / 2, screenHeight / 2, 2, screenWidth, screenHeight);
 
-	// JUGADORES
-	const defensaIzq: [PIXI.Point, PIXI.Point] = [new PIXI.Point(45, 25), new PIXI.Point(screenWidth / 2, screenHeight - 25)]
-	const delanteroIzq: [PIXI.Point, PIXI.Point] = [new PIXI.Point(screenWidth / 3, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)]
-	const defensaDer: [PIXI.Point, PIXI.Point] = [new PIXI.Point(screenWidth / 2, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)]
-	const delanteroDer: [PIXI.Point, PIXI.Point] = [new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 270, screenHeight - 25)]
+	const jugadorLimites: [PIXI.Point, PIXI.Point] = [new PIXI.Point(45, 25), new PIXI.Point(screenWidth - 45, screenHeight - 25)]
 
 	const jugadores = [
 		new Pollito(POLLITO_BLANCO_TEXTURA, 80, 330, 4, new PIXI.Point(45, 100), new PIXI.Point(screenWidth / 4, screenHeight - 100)), // portero
-		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 200, 4, ...defensaIzq), // defensa
-		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 460, 4, ...defensaIzq), // defensa
-		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 150, 4, ...delanteroIzq), // delantero
-		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 330, 4, ...delanteroIzq), // delantero
-		new Pollito(POLLITO_BLANCO_TEXTURA, 400, 530, 4, ...delanteroIzq), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 200, 4, ...jugadorLimites), // defensa
+		new Pollito(POLLITO_BLANCO_TEXTURA, 250, 460, 4, ...jugadorLimites), // defensa
+		new Pollito(POLLITO_BLANCO_TEXTURA, 350, 140, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 350, 340, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 350, 500, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 450, 100, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 450, 320, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_BLANCO_TEXTURA, 450, 540, 4, ...jugadorLimites), // delantero
 
 		new Pollito(POLLITO_CAFE_TEXTURA, 920, 330, 4, new PIXI.Point(screenWidth - 230, 100), new PIXI.Point(screenWidth - 45, screenHeight - 100)), // portero
-		new Pollito(POLLITO_CAFE_TEXTURA, 770, 200, 4, ...defensaDer), // defensa
-		new Pollito(POLLITO_CAFE_TEXTURA, 770, 460, 4, ...defensaDer), // defensa
-		new Pollito(POLLITO_CAFE_TEXTURA, 620, 150, 4, ...delanteroDer), // delantero
-		new Pollito(POLLITO_CAFE_TEXTURA, 620, 330, 4, ...delanteroDer), // delantero
-		new Pollito(POLLITO_CAFE_TEXTURA, 620, 530, 4, ...delanteroDer), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 770, 200, 4, ...jugadorLimites), // defensa
+		new Pollito(POLLITO_CAFE_TEXTURA, 770, 460, 4, ...jugadorLimites), // defensa
+		new Pollito(POLLITO_CAFE_TEXTURA, 670, 140, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 670, 340, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 670, 500, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 570, 100, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 570, 320, 4, ...jugadorLimites), // delantero
+		new Pollito(POLLITO_CAFE_TEXTURA, 570, 540, 4, ...jugadorLimites), // delantero
 	]
 
 	// Add players
 	app.stage.addChild(...jugadores, balon)
 
-
-	const mouseCoords = new PIXI.Point(0, 0);
-	app.stage.interactive = true;
-	app.stage.hitArea = app.screen;
-	app.stage.on('mousemove', (event) => {
-		mouseCoords.x = event.global.x;
-		mouseCoords.y = event.global.y;
+	// Inicia el timer al dar click en el botón de inicio
+	const startButton = document.getElementById("iniciar") as HTMLButtonElement
+	startButton.addEventListener("click", clouserTimer(jugadores, balon))
+	startButton.addEventListener("click", () => {
+		goles.derecha = 0
+		goles.izquierda = 0
+		actualizarGoles()
+		for (const jugador of jugadores) {
+			jugador.start()
+		}
 	});
+
+	const actualizarGoles = () => {
+		const golesIzquierda = document.getElementById('left-goals') as HTMLElement
+		const golesDerecha = document.getElementById("right-goals") as HTMLElement
+
+		golesIzquierda.innerText = goles.izquierda.toString()
+		golesDerecha.innerText = goles.derecha.toString()
+		balon.x = screenWidth / 2
+		balon.y = screenHeight / 2
+		balon.acceleration = new PIXI.Point(0, 0)
+	}
 
 	// Listen for animate update
 	app.ticker.add((delta) => {
@@ -101,54 +119,15 @@ const Main = () => {
 
 		// If the green square pops out of the cordon, it pops back into the
 		// middle
-		/* if ((balon.x < -30 || balon.x > (app.screen.width + 30))
-			|| balon.y < -30 || balon.y > (app.screen.height + 30)) {
+		if ((balon.x < 45 || balon.x > screenWidth - 45)
+			|| balon.y < 25 || balon.y > screenHeight - 25) {
 			balon.position.set(app.screen.width / 2, app.screen.height / 2);
-		} */
-
-		// If the mouse is off screen, then don't update any further
-		/* if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
-			|| app.screen.height > mouseCoords.y || mouseCoords.y > 0) {
-			// Get the red square's center point
-			const redSquareCenterPosition = new PIXI.Point(
-				jugadores[0].x,
-				jugadores[0].y,
-			);
-
-			// Calculate the direction vector between the mouse pointer and
-			// the red square
-			const toMouseDirection = new PIXI.Point(
-				mouseCoords.x - redSquareCenterPosition.x,
-				mouseCoords.y - redSquareCenterPosition.y,
-			);
-
-			// Use the above to figure out the angle that direction has
-			const angleToMouse = Math.atan2(
-				toMouseDirection.y,
-				toMouseDirection.x,
-			);
-
-			// Figure out the speed the square should be travelling by, as a
-			// function of how far away from the mouse pointer the red square is
-			const distMouseRedSquare = distanceBetweenTwoPoints(
-				mouseCoords,
-				redSquareCenterPosition,
-			);
-			const redSpeed = distMouseRedSquare * MOVEMENT_SPEED;
-
-			// Calculate the acceleration of the red square
-			jugadores[0].acceleration.set(
-				Math.cos(angleToMouse) * redSpeed,
-				Math.sin(angleToMouse) * redSpeed,
-			);
-		} */
+			balon.acceleration.set(balon.acceleration.x * 0.2, balon.acceleration.y * 0.2);
+		}
 
 		// Movimiento Jugadores
 		for (const jugador of jugadores) {
 			jugador.loop()
-
-			if (balon.shape.collidesRectangle(jugador.shape))
-				console.log(`Balón colisión con jugador`)
 
 			if (testForAABB(jugador, balon)) {
 				// Calculate the changes in acceleration that should be made between
@@ -163,8 +142,6 @@ const Main = () => {
 				balon.acceleration.set(
 					-collisionPush.x,
 					-collisionPush.y
-					/* 					-(collisionPush.x * jugador.mass),
-										-(collisionPush.y * jugador.mass), */
 				)
 			}
 
@@ -172,12 +149,14 @@ const Main = () => {
 		}
 
 
-		if (balon.shape.collidesRectangle(porteriaIzquierda.shape)) {
-			console.log("Gol en la izquierda");
+		if (testForAABB(balon, porteriaIzquierda)) {
+			goles.derecha++
+			actualizarGoles()
 		};
 
-		if (balon.shape.collidesRectangle(porteriaDerecha.shape)) {
-			console.log("Gol en la derecha");
+		if (testForAABB(balon, porteriaDerecha)) {
+			goles.izquierda++
+			actualizarGoles()
 		};
 
 		balon.move(delta)

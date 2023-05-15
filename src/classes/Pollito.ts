@@ -5,13 +5,15 @@ import { getRandomPoint } from '../utils/functions'
 export class Pollito extends Sprite {
 	private pointLeftTop: Point
 	private pointBottomRight: Point
+	private accelerationBackup: Point
 	public shape: Intersect.Rectangle
 
 	constructor(image: Texture, x: number, y: number, mass: number, pointLeftTop: Point, pointBottomRight: Point) {
 		super(image)
 		this.anchor.set(0.5)
 		this.position.set(x, y)
-		this.acceleration = getRandomPoint()
+		this.accelerationBackup = getRandomPoint()
+		this.acceleration = new Point(0, 0)
 		this.mass = mass
 		this.pointLeftTop = pointLeftTop
 		this.pointBottomRight = pointBottomRight
@@ -27,12 +29,12 @@ export class Pollito extends Sprite {
 
 		if (this.x < (this.pointLeftTop.x + this.width / 2) || this.x > (this.pointBottomRight.x - this.width / 2)) {
 			this.acceleration.x = -this.acceleration.x
-			this.x += this.acceleration.x
+			this.x += this.acceleration.x * 2
 		}
 
 		if (this.y < (this.pointLeftTop.y + this.height / 2) || this.y > (this.pointBottomRight.y - this.height / 2)) {
 			this.acceleration.y = -this.acceleration.y
-			this.y += this.acceleration.y
+			this.y += this.acceleration.y * 2
 		}
 	}
 
@@ -46,5 +48,14 @@ export class Pollito extends Sprite {
 		// Move ball
 		this.x += this.acceleration.x * delta
 		this.y += this.acceleration.y * delta
+	}
+
+	public start(): void {
+		this.acceleration.set(this.accelerationBackup.x, this.accelerationBackup.y)
+	}
+
+	public pause(): void {
+		this.accelerationBackup.set(this.acceleration.x, this.acceleration.y)
+		this.acceleration.set(0, 0)
 	}
 }

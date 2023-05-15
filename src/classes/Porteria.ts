@@ -13,8 +13,6 @@ export class Porteria extends Sprite {
 		this.x = x
 		this.y = y
 
-		// this.tint = 0x3500FA
-
 		this.shape = new Intersect.Rectangle(this)
 	}
 

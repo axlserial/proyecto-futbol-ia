@@ -40,7 +40,7 @@ export class Balon extends Sprite {
 	// Acciones del balón en el loop
 	public loop(): void {
 		//Reducing the acceleration by 0.01% of the acceleration
-		this.acceleration.set(this.acceleration.x * 0.99, this.acceleration.y * 0.99)
+		this.acceleration.set(this.acceleration.x * 0.999, this.acceleration.y * 0.999)
 
 		// Limits
 		this.checkLimits()
@@ -50,5 +50,9 @@ export class Balon extends Sprite {
 		// Move ball
 		this.x += this.acceleration.x * delta
 		this.y += this.acceleration.y * delta
+	}
+
+	public pause() {
+		this.acceleration.set(0)
 	}
 }
